@@ -1,46 +1,64 @@
 .myBG {
-  height: 100vh;
-  background: url("../assets/images/bg/main.jpg");
-  background-size: cover;
+    height: 100vh;
+    background: url("../assets/images/bg/main.jpg");
+    background-size: cover;
 }
 
 .intro {
-  height: 300px;
-  display: flex;
-  justify-content: end;
-  align-items: end;
+    height: 300px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
 }
 
 .title {
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1;
-  text-shadow: 2px 2px black;
-  letter-spacing: 4px;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    text-shadow: 2px 2px black;
+    letter-spacing: 4px;
 }
 
 .trending {
-  height: auto;
+    background-color: #141414;
+    /* height: auto;
   background: url("../assets/images/bg/scifi.jpg");
-  background-size: cover;
+  background-size: cover; */
 }
 
 .superhero {
-  height: auto;
-  background: url("../assets/images/bg/spiderman.jpg");
-  background-size: cover;
+    height: auto;
+    background: url("../assets/images/bg/spiderman.jpg");
+    background-size: cover;
 }
 
-.movieWrapper {
+.movieWrapper .row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
 }
 
 .movieImage {
-  height: auto;
-  background-color: black;
-  margin: 5px;
-  padding: 5px;
+    height: auto;
+    position: relative;
+    transition: transform 0.2s;
+    margin: 5px;
+    padding: 5px;
+}
+
+.movieImage:hover {
+    cursor: pointer;
+    transform: scale(0.9);
 }
 
 .images {
-  height: 500px;
+    height: 460px;
+}
+
+.img-detail {
+    height: 350px;
+}
+
+.sub-detail {
+    font-size: 20px;
+    font-weight: 400;
 }

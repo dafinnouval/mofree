@@ -8,8 +8,6 @@ import "./style/landingPage.css";
 import SearchBox from "./components/SearchBox";
 
 function App() {
-    // const [searchValue, setSearchValue] = useState("");
-
     return (
         <div>
             <div className="myBG">
@@ -18,7 +16,7 @@ function App() {
             </div>
 
             <div className="trending">
-                {/* <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} /> */}
+                {/* <SearchBox /> */}
                 <Trending />
             </div>
 

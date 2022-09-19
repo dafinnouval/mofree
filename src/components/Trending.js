@@ -4,17 +4,13 @@ import axios from "axios";
 
 const Trending = () => {
     const [movies, setMovies] = useState([]);
-    const [movieDetail, setMovieDetail] = useState([]);
+    const [movieDetail, setMovieDetail] = useState();
     const [show, setShow] = useState();
 
     const handleClose = () => setShow("");
 
-    const showDetail = (result) => {
-        setMovieDetail(result);
-        console.log(result);
-        setShow("detail");
-        window.scrollTo({ top: 700, behavior: "smooth" });
-    };
+    const [searchValue, setSearchValue] = useState("");
+    console.log(searchValue);
 
     useEffect(() => {
         axios
@@ -29,18 +25,22 @@ const Trending = () => {
             });
     }, []);
 
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_BASE_URL}/movie/{movie_id}`, {
+    const retrieveMovieDetail = async (id) => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/movie/${id}`, {
                 params: {
                     api_key: process.env.REACT_APP_TMDB_KEY,
                 },
-            })
-            .then((response) => {
-                // console.log("datas => ", response.data.results);
-                setMovieDetail(response.data.results);
             });
-    }, []);
+
+            console.log(response.data);
+            setMovieDetail(response.data);
+            setShow("detail");
+            window.scrollTo({ top: 700, behavior: "smooth" });
+        } catch (error) {
+            console.log(error, "<== error retrieve movie detail");
+        }
+    };
 
     return (
         <div>
@@ -48,6 +48,7 @@ const Trending = () => {
                 <br />
                 <h1 className="text-white">POPULAR MOVIES</h1>
                 <br />
+                <input className="form-control" onChange={(e) => setSearchValue(e.target.value)} placeholder="Type to search..."></input>
                 {show === "detail" && (
                     <div id="formDetail" className="card py-2 my-3 bg-dark">
                         <div className="card-body">
@@ -61,7 +62,7 @@ const Trending = () => {
                             </Row>
                             <Row>
                                 <Col md={3} sm={12} xs={12} className="text-center">
-                                    <Image src={`${process.env.REACT_APP_IMG_URL}/${movieDetail.poster_path}`} alt="" className="img-detail" />
+                                    <Image src={`${process.env.REACT_APP_IMG_URL}/${movieDetail.backdrop_path}`} alt="" className="img-detail" />
                                 </Col>
                                 <Col md={9} sm={12} xs={12} className="text-white">
                                     <h4>
@@ -88,22 +89,22 @@ const Trending = () => {
                     </div>
                 )}
                 <Row>
-                    {movies.map((result, index) => {
-                        return (
-                            <Col className="d-flex justify-content-start m-3" id="trending" key={index} onClick={() => showDetail(result)}>
-                                <Card className="movieImage">
-                                    <Image src={`${process.env.REACT_APP_IMG_URL}/${result.poster_path}`} alt="" className="images" />
-                                    <div className="bg-white">
-                                        <div className="p-2 m-1 text-dark">
-                                            <Card.Title className="text-center">{result.title}</Card.Title>
-                                            {/* <Card.Text className="text-left">{result.overview}</Card.Text> */}
-                                            {/* <Card.Text className="text-left">{result.release_date}</Card.Text> */}
+                    {movies
+                        .filter((result) => result.title.toLowerCase().includes(searchValue))
+                        .map((result, index) => {
+                            return (
+                                <Col className="d-flex justify-content-start m-3" id="trending" key={index}>
+                                    <Card className="movieImage" onClick={() => retrieveMovieDetail(result.id)}>
+                                        <Image src={`${process.env.REACT_APP_IMG_URL}/${result.poster_path}`} alt="" className="images" />
+                                        <div className="bg-white">
+                                            <div className="p-2 m-1 text-dark">
+                                                <Card.Title className="text-center">{result.title}</Card.Title>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Card>
-                            </Col>
-                        );
-                    })}
+                                    </Card>
+                                </Col>
+                            );
+                        })}
                 </Row>
             </Container>
         </div>
